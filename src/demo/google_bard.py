@@ -1,20 +1,14 @@
-from bardapi import Bard, ChatBard
-
+import google.generativeai as palm
 from django.conf import settings
+import os
 
+
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(settings.BASE_DIR, "bard-ai-390007-ab320546d370.json")
+
+palm.configure(api_key=settings.PAML_API_KEY)
 
 def get_response(prompt):
-
-    bard = Bard(token=settings.BARD_API_KEY)
-
-    response = bard.get_answer(str(prompt))
+    response = palm.chat(messages=prompt)
     print(response)
-    return response['content']
-
-
-# bard = ChatBard(token=settings.BARD_API_KEY, language="english")
-
-# def chat(prompt):
-
-#     response = bard.start()
-#     return response
+    return response.last
